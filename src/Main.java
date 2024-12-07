@@ -15,17 +15,10 @@ public class Main {
 		UserService userService = new UserService(userRepository);
 		userService.registerUser(user);
 		
-		// Update the user
-		user.setPhoneNumber("050-101-10-10");
-		userRepository.updateUser(user);
-		
 		// Get the user details
 		System.out.println(userService.getUserDetails("leomessi@gmail.com"));
 		
 		// Login the user
 		userService.loginUser("leomessi@gmail.com", "123");
-		
-		// Delete the user
-		userRepository.deleteUser(user);
 	}
 }

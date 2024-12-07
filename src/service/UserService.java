@@ -11,8 +11,14 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 	
+	private boolean containsUser(String email) {
+		for (User user : userRepository.USERS)
+			if (user.getEmail().equals(email)) return true;
+		return false;
+	}
+	
 	private boolean isEmailRegistered(String email) {
-		return userRepository.containsUser(email);
+		return containsUser(email);
 	}
 	
 	public void registerUser(User user) {
@@ -20,20 +26,19 @@ public class UserService {
 			System.out.println("Email is already registered!");
 		} else {
 			user.setPassword(encryptPassword(user.getPassword()));
-			userRepository.addUser(user);
+			userRepository.USERS.add(user);
 		}
 	}
 	
 	private boolean isValidUser(String email) {
-		return userRepository.containsUser(email);
+		return containsUser(email);
 	}
 	
 	private boolean verifyUserCredentials(String email, String password) {
 		for (User user : userRepository.USERS) {
 			if (user.getEmail().equals(email)) {
-				if (password.equals(decryptPassword(user.getPassword()))) {
+				if (password.equals(decryptPassword(user.getPassword())))
 					return true;
-				}
 			}
 		}
 		return false;
@@ -52,7 +57,10 @@ public class UserService {
 	}
 	
 	public User getUserDetails(String email) {
-		return userRepository.getUser(email);
+		for (User user : userRepository.USERS) {
+			if (user.getEmail().equals(email.toLowerCase())) return user;
+		}
+		return null;
 	}
 	
 	public static String encryptPassword(String password) {
